@@ -4,7 +4,7 @@ import { PROTOCOL_VERSION } from "./protocol";
 import "./style.css";
 
 const APP_VERSION = "0.1.0";
-const DEFAULT_SERVER = "http://localhost:8787";
+const DEFAULT_SERVER = import.meta.env.VITE_SERVER_URL ?? "http://46.16.36.87";
 type Settings = { color: string; opacity: number; fontFamily: string; fontSize: number; outline: string; background: string; x: number; y: number; visible: boolean; active: boolean; captureProtected: boolean };
 const defaults: Settings = { color: "#ffffff", opacity: 1, fontFamily: "Arial", fontSize: 72, outline: "2px #000000", background: "transparent", x: 80, y: 80, visible: true, active: true, captureProtected: true };
 const state = { settings: { ...defaults }, connected: false, socket: undefined as WebSocket | undefined, doc: new Y.Doc(), text: undefined as Y.Text | undefined };

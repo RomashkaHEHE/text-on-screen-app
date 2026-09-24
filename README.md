@@ -9,7 +9,7 @@ npm install
 npm run tauri dev
 ```
 
-`npm run build` checks and bundles the frontend. `cargo +stable check` checks the native shell. Set the server URL in the settings panel; the default is `http://localhost:8787`.
+`npm run build` checks and bundles the frontend. `cargo +stable check` checks the native shell. Set the server URL in the settings panel; the production default is `http://46.16.36.87`, and `VITE_SERVER_URL` can override it for local development.
 
 ## Release updates
 
