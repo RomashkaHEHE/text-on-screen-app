@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Text on Screen",
+  "version": "0.1.0",
+  "identifier": "com.romashka.textonscreen",
+  "build": { "beforeDevCommand": "npm run dev", "devUrl": "http://localhost:1420", "beforeBuildCommand": "npm run build", "frontendDist": "../dist" },
+  "app": {
+    "windows": [{ "label": "main", "title": "Text on Screen", "fullscreen": true, "transparent": true, "decorations": false, "alwaysOnTop": true, "skipTaskbar": true, "resizable": false, "shadow": false, "visible": true }],
+    "security": { "csp": "default-src 'self' https://esm.sh ws: wss:; connect-src 'self' https: http: ws: wss:; style-src 'self' 'unsafe-inline';" },
+    "trayIcon": { "iconPath": "icons/icon.png", "tooltip": "Text on Screen", "menuOnLeftClick": false }
+  },
+  "bundle": { "active": true, "targets": ["nsis", "msi"], "icon": ["icons/icon.png"] }
+}

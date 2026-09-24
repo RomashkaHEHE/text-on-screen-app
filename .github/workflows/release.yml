@@ -1,0 +1,55 @@
+name: Build and publish release
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Semver release to build (x.y.z)"
+        required: true
+        type: string
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_VERSION: ${{ github.event.inputs.version || github.ref_name }}
+      HAS_RELEASE_SSH_KEY: ${{ secrets.RELEASE_SSH_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize version
+        shell: pwsh
+        run: echo "RELEASE_VERSION=$($env:RELEASE_VERSION -replace '^v','')" >> $env:GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - name: Build installer
+        run: npm run tauri -- build
+      - name: Create release metadata
+        shell: pwsh
+        run: |
+          $metadata = @{ version=$env:RELEASE_VERSION; notes="Text on Screen $env:RELEASE_VERSION"; pub_date=(Get-Date).ToUniversalTime().ToString("o"); platforms=@{ "windows-x86_64" = @{ url="/downloads/$env:RELEASE_VERSION/TextOnScreen_$($env:RELEASE_VERSION)_x64-setup.exe"; signature=$env:TAURI_SIGNATURE } } } | ConvertTo-Json -Depth 5
+          New-Item -ItemType Directory -Force -Path release-out | Out-Null
+          Copy-Item "src-tauri/target/release/bundle/nsis/*setup.exe" "release-out/TextOnScreen_$($env:RELEASE_VERSION)_x64-setup.exe"
+          $metadata | Set-Content release-out/latest.json
+      - uses: actions/upload-artifact@v4
+        with: { name: text-on-screen-${{ env.RELEASE_VERSION }}, path: release-out }
+      - name: Upload installer to server
+        if: ${{ env.HAS_RELEASE_SSH_KEY != '' }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.RELEASE_SSH_HOST }}
+          username: ${{ secrets.RELEASE_SSH_USER }}
+          key: ${{ secrets.RELEASE_SSH_KEY }}
+          source: release-out/*
+          target: ${{ secrets.RELEASE_SSH_PATH }}/releases/${{ env.RELEASE_VERSION }}
+          strip_components: 1
+      - name: Publish latest metadata on server
+        if: ${{ env.HAS_RELEASE_SSH_KEY != '' }}
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.RELEASE_SSH_HOST }}
+          username: ${{ secrets.RELEASE_SSH_USER }}
+          key: ${{ secrets.RELEASE_SSH_KEY }}
+          script: cp "${{ secrets.RELEASE_SSH_PATH }}/releases/${{ env.RELEASE_VERSION }}/latest.json" "${{ secrets.RELEASE_SSH_PATH }}/releases/latest.json"
