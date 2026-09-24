@@ -1,6 +1,6 @@
 # Release and deployment
 
-The `Build and publish release` workflow accepts a `vX.Y.Z` tag or a manual `version` input. It builds the signed Tauri installer, stores it as a GitHub artifact, and uploads it to the server when these secrets are configured:
+The `Build and publish release` workflow accepts a `vX.Y.Z` tag or a manual `version` input. It builds the Tauri installer, stores it as a GitHub artifact, and uploads it to the server when these secrets are configured. Add the Tauri updater signing variables when release signing is enabled:
 
 - `RELEASE_SSH_HOST`
 - `RELEASE_SSH_USER`

@@ -13,6 +13,6 @@ npm run tauri dev
 
 ## Release updates
 
-The app checks `/api/v1/version` and `/api/v1/releases/latest` at startup and from the settings panel. A newer semver release opens its signed installer with the install button. When the server advertises a newer `minimumClientVersion`, starting a room is blocked until the app is updated. The tagged/manual GitHub Actions workflow builds NSIS/MSI installers and can upload a selected `x.y.z` release to the server over SSH.
+The app checks `/api/v1/version` and `/api/v1/releases/latest` at startup and from the settings panel. A newer semver release opens its installer with the install button. When the server advertises a newer `minimumClientVersion`, starting a room is blocked until the app is updated. The tagged/manual GitHub Actions workflow builds NSIS/MSI installers and can upload a selected `x.y.z` release to the server over SSH.
 
 The protocol copy used by the client is in [`protocol/v1.md`](protocol/v1.md); the server repository is the canonical owner of protocol changes.
