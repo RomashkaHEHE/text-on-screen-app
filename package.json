@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": { "dev": "vite", "build": "tsc && vite build", "tauri": "tauri" },
-  "dependencies": { "@tauri-apps/api": "^2.4.1", "yjs": "^13.6.27" },
-  "devDependencies": { "@tauri-apps/cli": "^2.4.1", "typescript": "^5.7.3", "vite": "^6.1.0" }
+  "dependencies": { "@tauri-apps/api": "2.0.0", "yjs": "^13.6.27" },
+  "devDependencies": { "@tauri-apps/cli": "2.0.0", "typescript": "^5.7.3", "vite": "^6.1.0" }
 }

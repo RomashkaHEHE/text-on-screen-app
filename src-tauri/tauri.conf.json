@@ -9,5 +9,5 @@
     "security": { "csp": "default-src 'self' https://esm.sh ws: wss:; connect-src 'self' https: http: ws: wss:; style-src 'self' 'unsafe-inline';" },
     "trayIcon": { "iconPath": "icons/icon.png", "tooltip": "Text on Screen", "menuOnLeftClick": false }
   },
-  "bundle": { "active": true, "targets": ["nsis", "msi"], "icon": ["icons/icon.png"] }
+  "bundle": { "active": true, "targets": ["nsis", "msi"], "icon": ["icons/icon.png", "icons/icon.ico"] }
 }
